@@ -2,7 +2,7 @@ package co.edu.board;
 
 import java.util.Scanner;
 
-//	기능만.
+//	기능만..
 public class BoardDAO {
 	private static BoardDAO instance = new BoardDAO();
 	private BoardDAO() {};
