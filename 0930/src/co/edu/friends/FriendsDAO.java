@@ -31,7 +31,7 @@ public class FriendsDAO {
 			}
 			if (myFriends[i] == null) {
 				myFriends[i] = friend;
-				System.out.println(fNo + "번 글이 등록되었습니다");
+				System.out.println(fNo + "번 친구가 등록되었습니다");
 				System.out.println();
 				break;
 			}
@@ -54,6 +54,7 @@ public class FriendsDAO {
 		System.out.println("친구 수정 기능입니다.");
 		System.out.print("수정할 친구 번호를 입력하세요>>> ");
 		int fNo = scn.nextInt();
+		scn.nextLine();
 		System.out.print("수정할 친구이름을 입력하세요 >>> ");
 		String fName = scn.nextLine();
 		System.out.print("수정할 전화번호를 입력하세요 >>> ");
