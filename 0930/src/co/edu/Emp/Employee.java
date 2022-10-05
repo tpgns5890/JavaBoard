@@ -84,7 +84,7 @@ public class Employee {
 	public String getDeptName() {
 		return deptName;
 	}
-	
+
 //	public void setDeptName(String deptName) {
 //		this.deptName = deptName;
 //	}
