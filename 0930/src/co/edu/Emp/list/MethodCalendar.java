@@ -46,6 +46,5 @@ public class MethodCalendar {
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month-1, 1);
 		return cal.getActualMaximum(Calendar.DATE);
-		
 	}// end of getLastDate
 } // end of class
