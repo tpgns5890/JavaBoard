@@ -20,7 +20,7 @@ public class StringExe {
 				String str = scn.nextLine();
 				if (str == null)
 					break;
-				if(str.charAt(0,2)>22)
+//				if(str.charAt(0,2)>22)
 				// 남자입니다. 여자입니다.
 				if (str.charAt(7) % 2 == 1) {
 					System.out.println("남자입니다.");
