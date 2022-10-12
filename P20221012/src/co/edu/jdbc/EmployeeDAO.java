@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO extends DAO {
+	//등록
 	public void insert(Employee emp) {
 		String sql = "insert into empl(employee_id, last_name, email, hire_date, job_id)\r\n" + "values("
 				+ emp.getEmployeeId() + ", '" + emp.getLastName() + "', '" + emp.getEmail() + "', '" + emp.getHireDate()
