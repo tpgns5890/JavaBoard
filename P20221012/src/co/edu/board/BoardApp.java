@@ -35,43 +35,43 @@ public class BoardApp {
 					int no = Integer.parseInt(scn.nextLine());
 					System.out.print("수정하실 내용을 입력하세요>> ");
 					String content = scn.nextLine();
-					
+
 					Board brd = new Board(no, content);
 					dao.update(brd);
 					System.out.println();
-				}else if(menu == 3) {
+				} else if (menu == 3) {
 					System.out.println("글삭제 메뉴입니다.");
 					System.out.print("삭제할 게시글의 글번호를 입력하세요>> ");
 					int no = Integer.parseInt(scn.nextLine());
-					
+
 					dao.delete(no);
 					System.out.println();
-				}else if(menu == 4) {
+				} else if (menu == 4) {
 					System.out.println("<글 전체 목록>");
 					List<Board> brd = dao.search();
-					
-					for(Board boards : brd){
+
+					for (Board boards : brd) {
 						System.out.println(boards);
 					}
 					System.out.println();
-					
-				}else if(menu == 5) {
+
+				} else if (menu == 5) {
 					System.out.println("<게시글 상세 조회>");
 					System.out.print("조회할 게시글의 번호를 입력하세요>> ");
 					int no = Integer.parseInt(scn.nextLine());
-					
+
 					if(dao.getBoard(no) != null) {
-						System.out.println("글번호 <"+no +"> 상세보기");
-						System.out.println(dao.getBoard(no));
-						System.out.println();
+					System.out.println("글번호 <" + no + "> 상세보기");
+					System.out.println(dao.getBoard(no));
+					System.out.println();
 					}else {
 						System.out.println(no + "번에 해당하는 글이 없습니다.");
 						System.out.println();
 					}
-				}else if(menu == 9) {
+				} else if (menu == 9) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
-				}else {
+				} else {
 					System.out.println("없는 메뉴입니다.");
 				}
 			} catch (NumberFormatException e) {

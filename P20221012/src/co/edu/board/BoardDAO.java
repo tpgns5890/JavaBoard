@@ -73,9 +73,9 @@ public class BoardDAO extends DAO {
 		List<Board> list = new ArrayList<>();
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select board_num, board_title, board_writer, creation_date from board order by board_num");
+			rs = stmt.executeQuery("select board_num, board_title, board_writer from board order by board_num");
 			while(rs.next()) {
-				list.add(new Board(rs.getInt("board_num"), rs.getString("board_title"), rs.getString("board_writer"), rs.getString("creation_date")));
+				list.add(new Board(rs.getInt("board_num"), rs.getString("board_title"), rs.getString("board_writer")));
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -87,10 +87,11 @@ public class BoardDAO extends DAO {
 
 	public Board getBoard(int brdNum) {
 		Board brd = null;
-		String sql = "update board set cnt = cnt + 1 where board_num= ?";
-		conn = getConnect();
+		String sql;
 		
 		try {
+			sql = "update board set cnt = cnt + 1 where board_num= ?";
+			conn = getConnect();
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, brdNum);
 			psmt.executeUpdate();
@@ -101,12 +102,12 @@ public class BoardDAO extends DAO {
 			disconnect();
 		}
 		
-		String sql1 = "select board_num, board_title, board_content, board_writer, creation_date, cnt from board where board_num = ? order by board_num";
-		conn = getConnect();
 		try {
-			psmt = conn.prepareStatement(sql1);
+			sql = "select board_num, board_title, board_content, board_writer, creation_date, cnt from board where board_num = ? order by board_num";
+			conn = getConnect();
+			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, brdNum);
-			psmt.executeQuery();
+			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
 				brd = new Board(rs.getInt("board_num"), rs.getString("board_title"), rs.getString("board_content"), rs.getString("board_writer"), rs.getString("creation_date"), rs.getInt("cnt"));

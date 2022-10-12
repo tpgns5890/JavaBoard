@@ -29,12 +29,21 @@ public class Board {
 
 
 
-	public Board(int boardNum, String boardTitle, String boardWriter, String creationDate) {
+	public Board(int boardNum, String boardTitle, String boardWriter) {
 		super();
 		this.boardNum = boardNum;
 		this.boardTitle = boardTitle;
 		this.boardWriter = boardWriter;
-		this.creationDate = creationDate;
+	}
+
+
+
+	public Board(int boardNum, String boardTitle, String boardContent, String boardWriter) {
+		super();
+		this.boardNum = boardNum;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.boardWriter = boardWriter;
 	}
 
 
@@ -89,8 +98,8 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "글번호: " + boardNum + " 글제목: " + boardTitle + "\n내용: " + boardContent
-				+ "\n작성자: " + boardWriter + " 작성일시: " + creationDate + " 조회수: " + cno;
+		return "Board [boardNum=" + boardNum + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
+				+ ", boardWriter=" + boardWriter + ", creationDate=" + creationDate + ", cno=" + cno + "]";
 	}
 	
 	
