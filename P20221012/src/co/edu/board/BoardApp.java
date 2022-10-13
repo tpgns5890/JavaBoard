@@ -71,12 +71,12 @@ public class BoardApp {
 								Board brd = dao.getBoard(no);
 								List<Reply> reply = dao.searchReply(no);
 								if (brd != null) {
-									while (true) {
 										System.out.println("<<<<<<<<글번호 <" + no + "> 상세보기>>>>>>>>\n");
 										System.out.println(brd.toString());
 										for (Reply replys : reply) {
 											System.out.println(replys.stringReply());
 										}
+										while (true) {
 										System.out.println("\n1.댓글쓰기 2.댓글삭제 3.상세보기종료");
 										System.out.print("메뉴를 입력하세요>> ");
 										int rNo = Integer.parseInt(scn.nextLine());
