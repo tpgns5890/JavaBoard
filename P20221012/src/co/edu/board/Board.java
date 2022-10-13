@@ -7,7 +7,11 @@ public class Board {
 	private String boardWriter;
 	private String creationDate;
 	private int cno;
-	
+
+	public Board() {
+
+	}
+
 	public Board(int boardNum, String boardTitle, String boardContent, String boardWriter, String creationDate,
 			int cno) {
 		super();
@@ -19,24 +23,12 @@ public class Board {
 		this.cno = cno;
 	}
 
-	
-
-	public Board(int boardNum, String boardContent) {
+	public Board(int boardNum, String boardContent, String boardWriter) {
 		super();
 		this.boardNum = boardNum;
 		this.boardContent = boardContent;
-	}
-
-
-
-	public Board(int boardNum, String boardTitle, String boardWriter) {
-		super();
-		this.boardNum = boardNum;
-		this.boardTitle = boardTitle;
 		this.boardWriter = boardWriter;
 	}
-
-
 
 	public Board(int boardNum, String boardTitle, String boardContent, String boardWriter) {
 		super();
@@ -45,8 +37,6 @@ public class Board {
 		this.boardContent = boardContent;
 		this.boardWriter = boardWriter;
 	}
-
-
 
 	public int getBoardNum() {
 		return boardNum;
@@ -98,9 +88,11 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [boardNum=" + boardNum + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
-				+ ", boardWriter=" + boardWriter + ", creationDate=" + creationDate + ", cno=" + cno + "]";
+		return "글번호: " + boardNum + " | 글제목: " + boardTitle + "\n글내용: " + boardContent + "\n작성자: " + boardWriter
+				+ " | 작성일시: " + creationDate + " | 조회수: " + cno;
 	}
-	
-	
+
+	public String searchString() {
+		return "글번호: " + boardNum + ", 글제목: " + boardTitle + ", 작성자: " + boardWriter + ", 작성일시: " + creationDate;
+	}
 }
