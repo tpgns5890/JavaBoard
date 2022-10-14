@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-class Emp implements s {
+class Emp implements Serializable {
 	int id;
 	String name;
 	String dept;
@@ -47,7 +47,7 @@ public class ObjectExample {
 		empList.add(new Emp(100, "홍길동", "인사"));
 		empList.add(new Emp(200, "김민식", "개발"));
 		empList.add(new Emp(300, "이유진", "총무"));
-
+		
 		try (FileOutputStream fos = new FileOutputStream("C:/temp/emp.dat");
 				ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
