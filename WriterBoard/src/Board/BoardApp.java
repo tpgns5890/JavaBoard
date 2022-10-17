@@ -28,7 +28,7 @@ public class BoardApp {
 
 						switch (mainMenu) {
 						case 1:
-							System.out.println("글제목을 입력하세요>>");
+							System.out.print("글제목을 입력하세요>> ");
 							String boardTitle = scn.nextLine();
 							System.out.print("글내용을 입력하세요>> ");
 							String boardContent = scn.nextLine();
