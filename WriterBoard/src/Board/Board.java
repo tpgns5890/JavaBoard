@@ -61,5 +61,11 @@ public class Board {
 	public void setViewCnt(int viewCnt) {
 		this.viewCnt = viewCnt;
 	}
+
+	@Override
+	public String toString() {
+		return "Board [boardNum=" + boardNum + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
+				+ ", writer=" + writer + ", creationDate=" + creationDate + ", viewCnt=" + viewCnt + "]";
+	}
 	
 }
