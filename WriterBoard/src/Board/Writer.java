@@ -48,6 +48,10 @@ public class Writer {
 	public String toString() {
 		return  "아이디: " + userId + "|이름: " + userName + "|게시글 수: " + postCnt;
 	}
+
+	public String showAll() {
+		return  "아이디: " + userId +"|비밀번호: "+userPw+ "|이름: " + userName + "|게시글 수: " + postCnt;
+	}
 	
 	
 }

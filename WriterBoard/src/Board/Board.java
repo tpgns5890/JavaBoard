@@ -73,14 +73,14 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "『 글번호 " + boardNum + "| 제목: " + boardTitle + "\n" + boardContent
+		return "『 고유번호 " + boardNum + "| 제목: " + boardTitle + "\n" + boardContent
 				+"\n"+ creationDate + "| 조회수" + viewCnt + " 』";
 	}
 
 	public String showRank() {
-		return "글번호 " + boardNum + "|제목: " + boardTitle + "|작성자: " + writer + "|조회수: " + viewCnt;
+		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|작성자: " + writer + "|조회수: " + viewCnt;
 	}
 	public String showAll() {
-		return "글번호 " + boardNum + "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt;
+		return "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt + "|고유번호:"+boardNum;
 	}
 }

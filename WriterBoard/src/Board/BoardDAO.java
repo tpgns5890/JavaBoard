@@ -354,5 +354,34 @@ public class BoardDAO extends DAO {
 			disconnect();
 		}
 	}
+//회원목록 출력
+	public List<Writer> showWriter() {
+		String sql = "select * from writer";
+		conn = getConnect();
+		List<Writer> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				list.add(new Writer(rs.getString("user_id"), rs.getString("user_pw"), rs.getString("user_name"),
+						rs.getInt("post_cnt")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+
+	public void updateUser(String userId1, String userPw1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteUser(String userId1) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

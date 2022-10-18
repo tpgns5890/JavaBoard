@@ -12,7 +12,7 @@ public class BoardApp {
 
 		while (true) {
 			System.out.println("===========게시판에 오신것을 환영합니다!============");
-			System.out.println("1.로그인 2.회원가입 3.회원탈퇴 4.익명으로로그인 9. 종료");
+			System.out.println("1.로그인 2.회원가입 3.회원탈퇴 9. 종료");
 			System.out.print("선택>> ");
 			try {
 				int logMenu = Integer.parseInt(scn.nextLine());
@@ -44,9 +44,10 @@ public class BoardApp {
 										System.out.println(
 												"=================================글 전체 목록=================================");
 										List<Board> boards = dao.boardSearch();
-
+										int i = 1;
 										for (Board brd : boards) {
-											System.out.println(brd.showAll());
+											System.out.println(i + "||" + brd.showAll());
+											i++;
 										}
 										System.out.println(
 												"============================================================================");
@@ -55,14 +56,14 @@ public class BoardApp {
 										try {
 											int boardMenu = Integer.parseInt(scn.nextLine());
 											if (boardMenu == 1) {
-												System.out.print("조회할 게시글의 번호를 입력해주세요>> ");
+												System.out.print("조회할 게시글의 고유번호를 입력해주세요>> ");
 												int no = Integer.parseInt(scn.nextLine());
 												Board brd = dao.getBoard(no);
 												List<Reply> reply = dao.showReply(no);
 												if (brd != null) {
 													while (true) {
-														System.out.println("\n=======================" + no
-																+ "번 글 상세보기=======================");
+														System.out.println("\n=======================고유번호 " + no
+																+ "번 게시글 상세보기=======================");
 														System.out.println(brd.toString());
 														for (Reply replys : reply) {
 															System.out.println(replys.toString());
@@ -77,7 +78,7 @@ public class BoardApp {
 															String repContent = scn.nextLine();
 															dao.insertRep(no, repContent, userId);
 														} else if (repMenu == 2) {
-															System.out.print("삭제할 댓글 번호>> ");
+															System.out.print("삭제할 댓글 고유번호>> ");
 															int repNo = Integer.parseInt(scn.nextLine());
 															dao.deleteRep(repNo, userId);
 														} else if (repMenu == 3) {
@@ -118,7 +119,7 @@ public class BoardApp {
 										try {
 											int menu = Integer.parseInt(scn.nextLine());
 											if (menu == 1) {
-												System.out.print("수정할 글번호 입력>> ");
+												System.out.print("수정할 글 고유번호 입력>> ");
 												int boardNum = Integer.parseInt(scn.nextLine());
 												System.out.print("제목수정>> ");
 												String boardTitle = scn.nextLine();
@@ -127,7 +128,7 @@ public class BoardApp {
 
 												dao.updateBoard(boardNum, boardTitle, boardContent, userId);
 											} else if (menu == 2) {
-												System.out.print("수정할 글번호 입력>> ");
+												System.out.print("삭제할 글 고유번호 입력>> ");
 												int boardNum = Integer.parseInt(scn.nextLine());
 												dao.deleteBoard(boardNum, userId);
 											} else if (menu == 3) {
@@ -208,7 +209,45 @@ public class BoardApp {
 					continue;
 				case 960704:
 					System.out.println("관리자로 로그인하셨습니다.");
-					
+					while (true) {
+						System.out.println("1.회원관리 2.게시글관리 3.문의사항 4.종료");
+						System.out.print("선택>> ");
+						int menu = Integer.parseInt(scn.nextLine());
+						if (menu == 1) {
+							System.out.println("회원관리입니다.");
+							List<Writer> writers = dao.showWriter();
+							for (Writer wrt : writers) {
+								System.out.println(wrt.showAll());
+							}
+							System.out.println("1.비밀번호수정 2.삭제 3.이전");
+							System.out.print("선택>> ");
+							int menu1 = Integer.parseInt(scn.nextLine());
+							if(menu1 == 1) {
+								System.out.print("수정할 회원의 아이디를 입력하세요>> ");
+								String userId1 = scn.nextLine();
+								System.out.print("비밀번호 수정>> ");
+								String userPw1 = scn.nextLine();
+								dao.updateUser(userId1, userPw1);
+							}else if(menu1 ==2) {
+								System.out.println("삭제할 회원의 아이디를 입력하세요>> ");
+								String userId1 = scn.nextLine();
+								dao.deleteUser(userId1);
+							}else if(menu1 ==3) {
+								continue;
+							}
+						} else if (menu == 2) {
+							System.out.println("전체게시글입니다.");
+						} else if (menu == 3) {
+							System.out.println("문의사항입니다");
+						} else if (menu == 4) {
+							System.out.println("종료합니다.");
+							System.out.println();
+							break;
+						} else {
+							System.out.println("없는 메뉴입니다. 다시 선택해 주세요.");
+							System.out.println();
+						}
+					}
 				case 9:
 					System.out.println("프로그램을 종료합니다.");
 					break;
