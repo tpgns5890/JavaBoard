@@ -46,8 +46,7 @@ public class Writer {
 	}
 	@Override
 	public String toString() {
-		return "Writer [userId=" + userId + ", userPw=" + userPw + ", userName=" + userName + ", postCnt=" + postCnt
-				+ "]";
+		return  "아이디: " + userId + "|이름: " + userName + "|게시글 수: " + postCnt;
 	}
 	
 	

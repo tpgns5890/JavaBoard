@@ -114,19 +114,20 @@ public class BoardDAO extends DAO {
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				list.add(new Board(rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
 						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			disconnect();
 		}
 		return list;
 	}
+
 //내가 쓴 글
-	public List<Board> MyBoards(String userId){
+	public List<Board> MyBoards(String userId) {
 		String sql = "select * from board where writer = ? order by board_seq";
 		conn = getConnect();
 		List<Board> list = new ArrayList<>();
@@ -134,74 +135,224 @@ public class BoardDAO extends DAO {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, userId);
 			rs = psmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				list.add(new Board(rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
 						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			disconnect();
-		}
-		return list;
-	}
-	
-//조회수랭킹
-	public List<Board> ViewRank(){
-		String sql = "select * from board where rownum <= 10 order by view_cnt";
-		conn = getConnect();
-		List<Board> list = new ArrayList<>();
-		try {
-			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();
-			while(rs.next()) {
-				list.add(new Board(rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
-						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			disconnect();
-		}
-		return list;
-	}
-	
-//게시글랭킹
-	public List<Writer> PostRank(){
-		String sql = "select * from board where rownum <= 3 order by view_cnt";
-		conn = getConnect();
-		List<Writer> list = new ArrayList<>();
-		try {
-			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();
-			while(rs.next()) {
-				list.add(new Writer(rs.getString("user_id"), rs.getString("user_pw"), rs.getString("user_name"),
-						rs.getInt("post_cnt")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
+		} finally {
 			disconnect();
 		}
 		return list;
 	}
 
+//글 수정
+	public void updateBoard(int boardNum, String boardTitle, String boardContent, String userId) {
+		String sql = "update board set board_title = ?, board_content = ?, creation_date = sysdate where board_seq = ? and writer = ?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, boardTitle);
+			psmt.setString(2, boardContent);
+			psmt.setInt(3, boardNum);
+			psmt.setString(4, userId);
+			psmt.executeUpdate();
+			System.out.println("수정완료!");
+			System.out.println();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+	}
+
+//글 삭제
+	public void deleteBoard(int boardNum, String userId) {
+		String sql = "delete from board where board_seq = ? and writer = ?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, boardNum);
+			psmt.setString(2, userId);
+			psmt.executeUpdate();
+			System.out.println("삭제완료!");
+			System.out.println();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+	}
+
+//조회수랭킹
+	public List<Board> ViewRank() {
+		String sql = "select * from board where rownum <= 10 order by view_cnt desc";
+		conn = getConnect();
+		List<Board> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				list.add(new Board(rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
+						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+
+//게시글랭킹
+	public List<Writer> PostRank() {
+		String sql = "select * from writer where rownum <= 3 order by post_cnt desc";
+		conn = getConnect();
+		List<Writer> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				list.add(new Writer(rs.getString("user_id"), rs.getString("user_pw"), rs.getString("user_name"),
+						rs.getInt("post_cnt")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+
+//쪽지읽기
 	public List<Message> readMsg(String userId) {
 		String sql = "select * from message where get_msg = ? order by creation_date";
 		conn = getConnect();
 		List<Message> list = new ArrayList<>();
 		try {
 			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, userId);
 			rs = psmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				list.add(new Message(rs.getString("msg_title"), rs.getString("msg_content"), rs.getString("get_msg"),
-						rs.getString("sent_msg"),rs.getString("creation_date")));
+						rs.getString("send_msg"), rs.getString("creation_date")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			disconnect();
 		}
 		return list;
 	}
+
+//상세보기
+	public Board getBoard(int no) {
+		Board brd = new Board();
+		String sql = "update board set view_cnt = view_cnt + 1 where board_seq = ?";
+		String sql1 = "select * from board where board_seq = ?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, no);
+			psmt.executeUpdate();
+			psmt = conn.prepareStatement(sql1);
+			psmt.setInt(1, no);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				brd = new Board(rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
+						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return brd;
+
+	}
+
+//댓글출력
+	public List<Reply> showReply(int no) {
+		String sql = "select * from reply where board_num = ? order by rep_seq";
+		conn = getConnect();
+		List<Reply> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, no);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				list.add(new Reply(rs.getInt("rep_seq"), rs.getInt("board_num"), rs.getString("rep_content"),
+						rs.getString("rep_writer"), rs.getString("creation_date")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+
+//댓글쓰기
+	public void insertRep(int no, String repContent, String userId) {
+		String sql = "insert into reply values (rep_seq.nextval, ?, ?, ?, sysdate)";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, no);
+			psmt.setString(2, repContent);
+			psmt.setString(3, userId);
+			psmt.executeUpdate();
+			System.out.println("댓글입력완료!\n");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+
+//댓글삭제
+	public void deleteRep(int repNo, String userId) {
+		String sql = "delete from reply where rep_seq = ? and rep_writer = ?";
+		conn = getConnect();
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, repNo);
+			psmt.setString(2, userId);
+			int r = psmt.executeUpdate();
+			if (r == 0) {
+				System.out.println("삭제할 게시글이 없거나 해당 게시글을 삭제할 권한이 없습니다.");
+			} else {
+				System.out.println("삭제완료!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+//쪽지보내기
+	public void sendMsg(String msgTitle, String msgContent, String getMsg, String userId) {
+		String sql = "insert into message values(?, ? ,? ,?, sysdate)";
+		conn = getConnect();
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, msgTitle);
+			psmt.setString(2, msgContent);
+			psmt.setString(3, getMsg);
+			psmt.setString(4, userId);
+			psmt.executeUpdate();
+			System.out.println("쪽지보내기 성공!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+
 }

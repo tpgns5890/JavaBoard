@@ -1,4 +1,4 @@
-package co.edu.board;
+package Board;
 
 public class Reply {
 	private int repSeq;
@@ -7,6 +7,10 @@ public class Reply {
 	private String repWriter;
 	private String creationDate;
 
+	public Reply() {
+		super();
+	}
+
 	public Reply(int repSeq, int boardNum, String repContent, String repWriter, String creationDate) {
 		super();
 		this.repSeq = repSeq;
@@ -14,10 +18,6 @@ public class Reply {
 		this.repContent = repContent;
 		this.repWriter = repWriter;
 		this.creationDate = creationDate;
-	}
-
-	public Reply() {
-		super();
 	}
 
 	public int getRepSeq() {
@@ -59,9 +59,10 @@ public class Reply {
 	public void setCreationDate(String creationDate) {
 		this.creationDate = creationDate;
 	}
-	
-	public String stringReply() {
-		return "│\n├───" +"댓글"+repSeq+" 내용:"+ repContent+ "\t작성자:"+repWriter+" 작성일시:"+creationDate;
-		
+
+	@Override
+	public String toString() {
+		return "│\n├───" +"댓글"+repSeq+"||내용:"+ repContent+ "||작성자:"+repWriter+"||"+creationDate;
 	}
+
 }
