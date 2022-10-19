@@ -73,14 +73,21 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "『 고유번호 " + boardNum + "| 제목: " + boardTitle + "\n" + boardContent
-				+"\n"+ creationDate + "| 조회수" + viewCnt + " 』";
+		return "『제목: " + boardTitle + "\n 내용: " + boardContent
+				+"\n "+ creationDate + "| 조회수" + viewCnt + " 』";
 	}
 
 	public String showRank() {
 		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|작성자: " + writer + "|조회수: " + viewCnt;
 	}
 	public String showAll() {
-		return "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt + "|고유번호:"+boardNum;
+		return boardNum + "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt ;
+	}
+	public String myBoards() {
+		return "『 고유번호 " + boardNum + "| 제목: " + boardTitle + "||"+boardContent
+				+"||"+ creationDate + "| 조회수" + viewCnt + " 』";
+	}
+	public String manageBrd() {
+		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|내용: "+boardContent+ "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt;
 	}
 }

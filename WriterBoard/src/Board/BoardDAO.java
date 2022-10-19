@@ -1,6 +1,7 @@
 package Board;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -252,7 +253,7 @@ public class BoardDAO extends DAO {
 	public Board getBoard(int no) {
 		Board brd = new Board();
 		String sql = "update board set view_cnt = view_cnt + 1 where board_seq = ?";
-		String sql1 = "select * from board where board_seq = ?";
+		String sql1 = "select * from board where board_seq = ? order by board_seq";
 		conn = getConnect();
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -318,7 +319,6 @@ public class BoardDAO extends DAO {
 	public void deleteRep(int repNo, String userId) {
 		String sql = "delete from reply where rep_seq = ? and rep_writer = ?";
 		conn = getConnect();
-
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, repNo);
@@ -347,13 +347,14 @@ public class BoardDAO extends DAO {
 			psmt.setString(3, getMsg);
 			psmt.setString(4, userId);
 			psmt.executeUpdate();
-			System.out.println("쪽지보내기 성공!");
+			System.out.println("보내기 성공!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
 	}
+
 //회원목록 출력
 	public List<Writer> showWriter() {
 		String sql = "select * from writer";
@@ -374,14 +375,55 @@ public class BoardDAO extends DAO {
 		return list;
 	}
 
+//회원정보 수정
 	public void updateUser(String userId1, String userPw1) {
-		// TODO Auto-generated method stub
-		
+		String sql = "update writer set user_pw = ? where user_id = ?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, userPw1);
+			psmt.setString(2, userId1);
+			psmt.executeUpdate();
+			System.out.println("비밀번호가 수정되었습니다.");
+			System.out.println();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
 	}
 
+//회원삭제
 	public void deleteUser(String userId1) {
-		// TODO Auto-generated method stub
-		
+		String sql = "delete from writer where user_id =?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, userId1);
+			psmt.executeUpdate();
+			System.out.println("삭제완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+
+//회원삭제(관리자)
+	public void deleteUserM(int boardNo) {
+		String sql = "delete from board where board_seq = ?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, boardNo);
+			psmt.executeUpdate();
+			System.out.println("삭제완료");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
 	}
 
 }

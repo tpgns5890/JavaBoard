@@ -62,7 +62,7 @@ public class Reply {
 
 	@Override
 	public String toString() {
-		return "│\n├───" +"||내용:"+ repContent+ "||작성자:"+repWriter+"||"+creationDate+"||고유번호:"+repSeq;
+		return "\n└───" +repSeq +"|내용:"+ repContent+ "───작성자:"+repWriter+"|"+creationDate;
 	}
 
 }
