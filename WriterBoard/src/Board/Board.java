@@ -1,6 +1,7 @@
 package Board;
 
 public class Board {
+	private int rowNum;
 	private int boardNum;
 	private String boardTitle;
 	private String boardContent;
@@ -10,6 +11,18 @@ public class Board {
 
 	public Board() {
 		super();
+	}
+
+	public Board(int rowNum, int boardNum, String boardTitle, String boardContent, String writer, String creationDate,
+			int viewCnt) {
+		super();
+		this.rowNum = rowNum;
+		this.boardNum = boardNum;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.writer = writer;
+		this.creationDate = creationDate;
+		this.viewCnt = viewCnt;
 	}
 
 	public Board(int boardNum, String boardTitle, String boardContent, String writer, String creationDate,
@@ -81,7 +94,7 @@ public class Board {
 		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|작성자: " + writer + "|조회수: " + viewCnt;
 	}
 	public String showAll() {
-		return boardNum + "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt ;
+		return rowNum + "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt + "|고유번호: "+boardNum;
 	}
 	public String myBoards() {
 		return "『 고유번호 " + boardNum + "| 제목: " + boardTitle + "||"+boardContent
@@ -89,5 +102,13 @@ public class Board {
 	}
 	public String manageBrd() {
 		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|내용: "+boardContent+ "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt;
+	}
+
+	public int getRowNum() {
+		return rowNum;
+	}
+
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
 	}
 }

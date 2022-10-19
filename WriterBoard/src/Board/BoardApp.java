@@ -60,7 +60,7 @@ public class BoardApp {
 													Board brd = dao.getBoard(no);
 													List<Reply> reply = dao.showReply(no);
 													if (brd != null) {
-														System.out.println("\n===============================게시글 상세보기=================================");
+														System.out.println("\n==============================="+no+"번 게시글 상세보기=================================");
 														System.out.println(brd.toString());
 														for (Reply replys : reply) {
 															System.out.println(replys.toString());
@@ -162,6 +162,7 @@ public class BoardApp {
 									System.out.println("\n===============게시글 수 랭킹입니다===============");
 
 									List<Writer> writers = dao.PostRank();
+									
 									int i = 1;
 									for (Writer wrt : writers) {
 										System.out.println(i + "위: " + wrt.toString());

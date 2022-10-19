@@ -109,14 +109,14 @@ public class BoardDAO extends DAO {
 
 //전체목록조회
 	public List<Board> boardSearch() {
-		String sql = "select * from board order by board_seq";
+		String sql = "select rownum, board_seq, board_title, board_content, writer, creation_date, view_cnt from board order by board_seq";
 		conn = getConnect();
 		List<Board> list = new ArrayList<>();
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			while (rs.next()) {
-				list.add(new Board(rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
+				list.add(new Board(rs.getInt("rownum"), rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
 						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt")));
 			}
 		} catch (SQLException e) {
@@ -171,12 +171,16 @@ public class BoardDAO extends DAO {
 
 //글 삭제
 	public void deleteBoard(int boardNum, String userId) {
+		String sql1 = "update writer set post_cnt = post_cnt - 1 where user_id = ?";
 		String sql = "delete from board where board_seq = ? and writer = ?";
 		conn = getConnect();
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, boardNum);
 			psmt.setString(2, userId);
+			psmt.executeUpdate();
+			psmt = conn.prepareStatement(sql1);
+			psmt.setString(1, userId);
 			psmt.executeUpdate();
 			System.out.println("삭제완료!");
 			System.out.println();
@@ -190,7 +194,7 @@ public class BoardDAO extends DAO {
 
 //조회수랭킹
 	public List<Board> ViewRank() {
-		String sql = "select * from board where rownum <= 10 order by view_cnt desc";
+		String sql = "select * from (select * from board order by view_cnt desc) where rownum <=3";
 		conn = getConnect();
 		List<Board> list = new ArrayList<>();
 		try {
@@ -210,7 +214,7 @@ public class BoardDAO extends DAO {
 
 //게시글랭킹
 	public List<Writer> PostRank() {
-		String sql = "select * from writer where rownum <= 3 order by post_cnt desc";
+		String sql = "select * from (select * from writer order by post_cnt desc) where rownum <=3";
 		conn = getConnect();
 		List<Writer> list = new ArrayList<>();
 		try {
@@ -252,8 +256,9 @@ public class BoardDAO extends DAO {
 //상세보기
 	public Board getBoard(int no) {
 		Board brd = new Board();
+		
 		String sql = "update board set view_cnt = view_cnt + 1 where board_seq = ?";
-		String sql1 = "select * from board where board_seq = ? order by board_seq";
+		String sql1 = "select * from board where board_seq = ?";
 		conn = getConnect();
 		try {
 			psmt = conn.prepareStatement(sql);
