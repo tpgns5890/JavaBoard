@@ -77,6 +77,7 @@ public class BoardApp {
 												while (true) {
 													Board brd = dao.getBoard(no);
 													List<Reply> reply = dao.showReply(no);
+													
 													if (brd != null) {
 														System.out.println("\n========================" + no
 																+ "번 게시글 상세보기==========================");
