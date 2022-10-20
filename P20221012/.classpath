@@ -12,9 +12,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Dev/ojdbc6_g.jar"/>
-	<classpathentry kind="lib" path="C:/Dev/mail-1.4.7.jar"/>
-	<classpathentry kind="lib" path="C:/Dev/activation-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

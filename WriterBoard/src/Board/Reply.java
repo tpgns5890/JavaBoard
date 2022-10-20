@@ -62,7 +62,7 @@ public class Reply {
 
 	@Override
 	public String toString() {
-		return "\n└───" +repSeq +"|내용:"+ repContent+ "───작성자:"+repWriter+"|"+creationDate;
+		return "└───" +repSeq +String.format("·%-15s", repContent)+ String.format(" · 작성자: %-10s", repWriter)+" · "+creationDate;
 	}
 
 }

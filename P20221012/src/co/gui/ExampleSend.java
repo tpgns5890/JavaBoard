@@ -13,7 +13,7 @@ public class ExampleSend {
   public static void main(String[] args) {
     String api_key = "NCSBG97WKZOKGGPW";
     String api_secret = "TUOKD20EUECAG6Y5MRAM6T3GP7FMYNIK";
-    Message coolsms = new Message(api_key, api_secret);
+//    Message coolsms = new Message(api_key, api_secret);
 
     // 4 params(to, from, type, text) are mandatory. must be filled
     HashMap<String, String> params = new HashMap<String, String>();

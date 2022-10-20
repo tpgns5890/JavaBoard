@@ -87,21 +87,21 @@ public class Board {
 	@Override
 	public String toString() {
 		return "『제목: " + boardTitle + "\n 내용: " + boardContent
-				+"\n "+ creationDate + "| 조회수" + viewCnt + " 』";
+				+"\n "+ creationDate + String.format("|조회수: %2d", viewCnt) + "』";
 	}
 
 	public String showRank() {
-		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|작성자: " + writer + "|조회수: " + viewCnt;
+		return String.format("%2d번", boardNum) + String.format("|제목: %-10.10s", boardTitle) + "|작성자: " + writer + "|조회수: " + viewCnt;
 	}
 	public String showAll() {
-		return rowNum + "|제목: " + boardTitle + "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt + "|고유번호: "+boardNum;
+		return String.format("|제목: %-8.8s", boardTitle) + String.format("|작성자: %-10.10s", writer) + "|" + creationDate + String.format("|조회수: %-2d", viewCnt) + String.format("|고유번호: %-2d|",boardNum);
 	}
 	public String myBoards() {
-		return "『 고유번호 " + boardNum + "| 제목: " + boardTitle + "||"+boardContent
-				+"||"+ creationDate + "| 조회수" + viewCnt + " 』";
+		return boardNum + " | 제목: " + boardTitle + " | "+boardContent
+				+" | "+ creationDate + " | 조회수: " + viewCnt;
 	}
 	public String manageBrd() {
-		return "고유번호 " + boardNum + "|제목: " + boardTitle + "|내용: "+boardContent+ "|작성자: " + writer +"|작성일: " + creationDate + "|조회수: " + viewCnt;
+		return "고유번호 " + boardNum + String.format("|제목: %-8.8s", boardTitle) + "|내용: "+boardContent+ "|작성자: " + writer +"|" + creationDate + "|조회수: " + viewCnt;
 	}
 
 	public int getRowNum() {

@@ -62,6 +62,6 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return "|제목: " + msgTitle + "|내용: " + msgContent + "|보낸사람: " + sendMsg + "|" + creationDate;
+		return String.format("|제목: ", msgTitle) + "|내용: " + msgContent + "|보낸사람: " + sendMsg + "|" + creationDate;
 	}
 }

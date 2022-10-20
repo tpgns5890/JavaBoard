@@ -1,17 +1,22 @@
 package Board;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class BoardDAO extends DAO {
 	Connection conn = getConnect();
+	Scanner scn = new Scanner(System.in);
 
 // 로그인 확인
-	public boolean userCheck(String userId, String userPw) {
+	public boolean userCheck(String userId) {
+		System.out.print("비밀번호를 입력하세요>> ");
+		String userPw = scn.nextLine();
 		String sql = "select user_id, user_pw from writer where user_id = ? and user_pw = ?";
 		conn = getConnect();
 		boolean r = false;
@@ -41,20 +46,29 @@ public class BoardDAO extends DAO {
 	}
 
 //회원가입
-	public void userCreate(String userId, String userPw, String userName) {
-		String sql = "insert into writer values (?, ?, ?, 0)";
+	public void userCreate() {
+		System.out.print("아이디를 입력하세요>> ");
+		String userId = scn.nextLine();
+		System.out.print("비밀번호를 입력하세요>> ");
+		String userPw = scn.nextLine();
+		System.out.print("이름을 입력하세요>> ");
+		String userName = scn.nextLine();
+		System.out.print("이메일을 입력하세요>> ");
+		String email = scn.nextLine();
+		String sql = "insert into writer values (?, ?, ?, 0,?)";
 		conn = getConnect();
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, userId);
 			psmt.setString(2, userPw);
 			psmt.setString(3, userName);
+			psmt.setString(4, email);
 			psmt.executeUpdate();
 			System.out.println("회원가입 완료!");
 			System.out.println();
 
 		} catch (SQLIntegrityConstraintViolationException e1) { // 아이디 중복 exception
-			System.out.println("중복된 아이디가 존재합니다.");
+			System.out.println("중복된 아이디가 존재하거나 필수항목을 입력하지 않았습니다.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -64,17 +78,24 @@ public class BoardDAO extends DAO {
 	}
 
 //회원삭제
-	public void userDelete(String userId, String userPw) {
+	public void userDelete() {
+		System.out.print("본인의 아이디를 입력하세요>> ");
+		String userId = scn.nextLine();
+		System.out.print("비밀번호를 입력하세요>> ");
+		String userPw = scn.nextLine();
 		String sql = "delete from writer where user_id = ? and user_pw =?";
 		conn = getConnect();
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, userId);
 			psmt.setString(2, userPw);
-			psmt.executeUpdate();
-			System.out.println("회원삭제 완료!");
-			System.out.println();
-
+			int r = psmt.executeUpdate();
+			if (r != 1) {
+				System.out.println("존재하지 않는 아이디거나 비밀번호가 맞지 않습니다.");
+			} else {
+				System.out.println("회원삭제 완료!");
+				System.out.println();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -84,7 +105,11 @@ public class BoardDAO extends DAO {
 	}
 
 //글쓰기
-	public void boardInsert(String boardTitle, String boardContent, String userId) {
+	public void boardInsert(String userId) {
+		System.out.print("글제목을 입력하세요>> ");
+		String boardTitle = scn.nextLine();
+		System.out.print("글내용을 입력하세요>> ");
+		String boardContent = scn.nextLine();
 		String sql = "update writer set post_cnt = post_cnt + 1 where user_id = ?";
 		String sql1 = "insert into board values (board_seq.nextVal, ?, ?, ?, sysdate, 0)";
 		conn = getConnect();
@@ -116,8 +141,9 @@ public class BoardDAO extends DAO {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			while (rs.next()) {
-				list.add(new Board(rs.getInt("rownum"), rs.getInt("board_seq"), rs.getString("board_title"), rs.getString("board_content"),
-						rs.getString("writer"), rs.getString("creation_date"), rs.getInt("view_cnt")));
+				list.add(new Board(rs.getInt("rownum"), rs.getInt("board_seq"), rs.getString("board_title"),
+						rs.getString("board_content"), rs.getString("writer"), rs.getString("creation_date"),
+						rs.getInt("view_cnt")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -149,7 +175,13 @@ public class BoardDAO extends DAO {
 	}
 
 //글 수정
-	public void updateBoard(int boardNum, String boardTitle, String boardContent, String userId) {
+	public void updateBoard(String userId) {
+		System.out.print("수정할 글 고유번호 입력>> ");
+		int boardNum = Integer.parseInt(scn.nextLine());
+		System.out.print("제목수정>> ");
+		String boardTitle = scn.nextLine();
+		System.out.print("내용수정>> ");
+		String boardContent = scn.nextLine();
 		String sql = "update board set board_title = ?, board_content = ?, creation_date = sysdate where board_seq = ? and writer = ?";
 		conn = getConnect();
 		try {
@@ -170,7 +202,9 @@ public class BoardDAO extends DAO {
 	}
 
 //글 삭제
-	public void deleteBoard(int boardNum, String userId) {
+	public void deleteBoard(String userId) {
+		System.out.print("삭제할 글 고유번호 입력>> ");
+		int boardNum = Integer.parseInt(scn.nextLine());
 		String sql1 = "update writer set post_cnt = post_cnt - 1 where user_id = ?";
 		String sql = "delete from board where board_seq = ? and writer = ?";
 		conn = getConnect();
@@ -256,7 +290,7 @@ public class BoardDAO extends DAO {
 //상세보기
 	public Board getBoard(int no) {
 		Board brd = new Board();
-		
+
 		String sql = "update board set view_cnt = view_cnt + 1 where board_seq = ?";
 		String sql1 = "select * from board where board_seq = ?";
 		conn = getConnect();
@@ -303,7 +337,9 @@ public class BoardDAO extends DAO {
 	}
 
 //댓글쓰기
-	public void insertRep(int no, String repContent, String userId) {
+	public void insertRep(int no, String userId) {
+		System.out.print("댓글내용 입력>> ");
+		String repContent = scn.nextLine();
 		String sql = "insert into reply values (rep_seq.nextval, ?, ?, ?, sysdate)";
 		conn = getConnect();
 		try {
@@ -321,7 +357,9 @@ public class BoardDAO extends DAO {
 	}
 
 //댓글삭제
-	public void deleteRep(int repNo, String userId) {
+	public void deleteRep(String userId) {
+		System.out.print("삭제할 댓글 고유번호>> ");
+		int repNo = Integer.parseInt(scn.nextLine());
 		String sql = "delete from reply where rep_seq = ? and rep_writer = ?";
 		conn = getConnect();
 		try {
@@ -341,7 +379,11 @@ public class BoardDAO extends DAO {
 	}
 
 //쪽지보내기
-	public void sendMsg(String msgTitle, String msgContent, String getMsg, String userId) {
+	public void sendMsg(String getMsg, String userId) {
+		System.out.print("제목 입력>> ");
+		String msgTitle = scn.nextLine();
+		System.out.print("내용 입력>> ");
+		String msgContent = scn.nextLine();
 		String sql = "insert into message values(?, ? ,? ,?, sysdate)";
 		conn = getConnect();
 
@@ -370,7 +412,7 @@ public class BoardDAO extends DAO {
 			rs = psmt.executeQuery();
 			while (rs.next()) {
 				list.add(new Writer(rs.getString("user_id"), rs.getString("user_pw"), rs.getString("user_name"),
-						rs.getInt("post_cnt")));
+						rs.getInt("post_cnt"), rs.getString("email")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -381,7 +423,11 @@ public class BoardDAO extends DAO {
 	}
 
 //회원정보 수정
-	public void updateUser(String userId1, String userPw1) {
+	public void updateUser() {
+		System.out.print("수정할 회원의 아이디를 입력하세요>> ");
+		String userId1 = scn.nextLine();
+		System.out.print("비밀번호 수정>> ");
+		String userPw1 = scn.nextLine();
 		String sql = "update writer set user_pw = ? where user_id = ?";
 		conn = getConnect();
 		try {
@@ -399,7 +445,9 @@ public class BoardDAO extends DAO {
 	}
 
 //회원삭제
-	public void deleteUser(String userId1) {
+	public void deleteUser() {
+		System.out.println("삭제할 회원의 아이디를 입력하세요>> ");
+		String userId1 = scn.nextLine();
 		String sql = "delete from writer where user_id =?";
 		conn = getConnect();
 		try {
@@ -415,7 +463,9 @@ public class BoardDAO extends DAO {
 	}
 
 //회원삭제(관리자)
-	public void deleteUserM(int boardNo) {
+	public void deleteUserM() {
+		System.out.println("삭제할 게시글의 고유번호 입력>> ");
+		int boardNo = Integer.parseInt(scn.nextLine());
 		String sql = "delete from board where board_seq = ?";
 		conn = getConnect();
 		try {
@@ -427,6 +477,43 @@ public class BoardDAO extends DAO {
 			e.printStackTrace();
 		} finally {
 			disconnect();
+		}
+
+	}
+
+//비밀번호 찾기
+	public void findPw() {
+		MailApp dao = new MailApp();
+		String toId = "";
+		String password = "";
+		System.out.println("아이디를 입력해주세요");
+		System.out.print("선택>> ");
+		String findId = scn.nextLine();
+		String sql = "select email from writer where user_id = ?";
+		String sql1 = "select user_pw from writer where user_id = ?";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, findId);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				toId = rs.getString(1);
+			}
+			psmt = conn.prepareStatement(sql1);
+			psmt.setString(1, findId);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				password = "안녕하세요! 게시판 운영자입니다\n" + findId + " 회원님의 비밀번호는 " + rs.getString(1) + "입니다.";
+			}
+//			dao.sendMail(toId, password);
+			if (dao.sendMail(toId, password).equals("Success")) {
+				System.out.println("등록된 이메일로 비밀번호를 발송하였습니다!");
+
+			} else {
+				System.out.println("전송실패");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 	}
