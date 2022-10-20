@@ -5,18 +5,16 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 public class BoardDAO extends DAO {
 	Connection conn = getConnect();
 	Scanner scn = new Scanner(System.in);
 
 // 로그인 확인
-	public boolean userCheck(String userId) {
-		System.out.print("비밀번호를 입력하세요>> ");
-		String userPw = scn.nextLine();
+	public boolean userCheck(String userId, String userPw) {
+		
 		String sql = "select user_id, user_pw from writer where user_id = ? and user_pw = ?";
 		conn = getConnect();
 		boolean r = false;
@@ -46,15 +44,7 @@ public class BoardDAO extends DAO {
 	}
 
 //회원가입
-	public void userCreate() {
-		System.out.print("아이디를 입력하세요>> ");
-		String userId = scn.nextLine();
-		System.out.print("비밀번호를 입력하세요>> ");
-		String userPw = scn.nextLine();
-		System.out.print("이름을 입력하세요>> ");
-		String userName = scn.nextLine();
-		System.out.print("이메일을 입력하세요>> ");
-		String email = scn.nextLine();
+	public void userCreate(String userId, String userPw, String userName, String email) {
 		String sql = "insert into writer values (?, ?, ?, 0,?)";
 		conn = getConnect();
 		try {
@@ -76,13 +66,29 @@ public class BoardDAO extends DAO {
 		}
 
 	}
-
+//인증번호 발송
+	public String emailAuth(String email) {
+		MailApp dao = new MailApp();
+		Random random = new Random();
+		int createNum = 0;
+		String ranNum = "";
+		int letter = 6;
+		String resultNum = "";
+		
+		for(int i=0; i<letter; i++) {
+			createNum = random.nextInt(9);
+			ranNum = Integer.toString(createNum);
+			resultNum += ranNum;	
+		}
+		String subject = "자바게시판 인증번호";
+		String authMail = "인증번호는 " + resultNum + "입니다.";
+		dao.sendMail(email, subject, authMail);
+		return resultNum;
+		
+	}
 //회원삭제
-	public void userDelete() {
-		System.out.print("본인의 아이디를 입력하세요>> ");
-		String userId = scn.nextLine();
-		System.out.print("비밀번호를 입력하세요>> ");
-		String userPw = scn.nextLine();
+	public void userDelete(String userId, String userPw) {
+		
 		String sql = "delete from writer where user_id = ? and user_pw =?";
 		conn = getConnect();
 		try {
@@ -105,11 +111,8 @@ public class BoardDAO extends DAO {
 	}
 
 //글쓰기
-	public void boardInsert(String userId) {
-		System.out.print("글제목을 입력하세요>> ");
-		String boardTitle = scn.nextLine();
-		System.out.print("글내용을 입력하세요>> ");
-		String boardContent = scn.nextLine();
+	public void boardInsert(String userId, String boardTitle, String boardContent) {
+		
 		String sql = "update writer set post_cnt = post_cnt + 1 where user_id = ?";
 		String sql1 = "insert into board values (board_seq.nextVal, ?, ?, ?, sysdate, 0)";
 		conn = getConnect();
@@ -175,13 +178,8 @@ public class BoardDAO extends DAO {
 	}
 
 //글 수정
-	public void updateBoard(String userId) {
-		System.out.print("수정할 글 고유번호 입력>> ");
-		int boardNum = Integer.parseInt(scn.nextLine());
-		System.out.print("제목수정>> ");
-		String boardTitle = scn.nextLine();
-		System.out.print("내용수정>> ");
-		String boardContent = scn.nextLine();
+	public void updateBoard(String userId, int boardNum, String boardTitle, String boardContent) {
+		
 		String sql = "update board set board_title = ?, board_content = ?, creation_date = sysdate where board_seq = ? and writer = ?";
 		conn = getConnect();
 		try {
@@ -202,9 +200,8 @@ public class BoardDAO extends DAO {
 	}
 
 //글 삭제
-	public void deleteBoard(String userId) {
-		System.out.print("삭제할 글 고유번호 입력>> ");
-		int boardNum = Integer.parseInt(scn.nextLine());
+	public void deleteBoard(String userId, int boardNum) {
+		
 		String sql1 = "update writer set post_cnt = post_cnt - 1 where user_id = ?";
 		String sql = "delete from board where board_seq = ? and writer = ?";
 		conn = getConnect();
@@ -337,9 +334,8 @@ public class BoardDAO extends DAO {
 	}
 
 //댓글쓰기
-	public void insertRep(int no, String userId) {
-		System.out.print("댓글내용 입력>> ");
-		String repContent = scn.nextLine();
+	public void insertRep(int no, String userId, String repContent) {
+		
 		String sql = "insert into reply values (rep_seq.nextval, ?, ?, ?, sysdate)";
 		conn = getConnect();
 		try {
@@ -357,9 +353,8 @@ public class BoardDAO extends DAO {
 	}
 
 //댓글삭제
-	public void deleteRep(String userId) {
-		System.out.print("삭제할 댓글 고유번호>> ");
-		int repNo = Integer.parseInt(scn.nextLine());
+	public void deleteRep(String userId, int repNo) {
+		
 		String sql = "delete from reply where rep_seq = ? and rep_writer = ?";
 		conn = getConnect();
 		try {
@@ -379,11 +374,8 @@ public class BoardDAO extends DAO {
 	}
 
 //쪽지보내기
-	public void sendMsg(String getMsg, String userId) {
-		System.out.print("제목 입력>> ");
-		String msgTitle = scn.nextLine();
-		System.out.print("내용 입력>> ");
-		String msgContent = scn.nextLine();
+	public void sendMsg(String msgTitle, String msgContent, String getMsg, String userId) {
+		
 		String sql = "insert into message values(?, ? ,? ,?, sysdate)";
 		conn = getConnect();
 
@@ -423,11 +415,8 @@ public class BoardDAO extends DAO {
 	}
 
 //회원정보 수정
-	public void updateUser() {
-		System.out.print("수정할 회원의 아이디를 입력하세요>> ");
-		String userId1 = scn.nextLine();
-		System.out.print("비밀번호 수정>> ");
-		String userPw1 = scn.nextLine();
+	public void updateUser(String userId1, String userPw1) {
+		
 		String sql = "update writer set user_pw = ? where user_id = ?";
 		conn = getConnect();
 		try {
@@ -444,10 +433,9 @@ public class BoardDAO extends DAO {
 		}
 	}
 
-//회원삭제
-	public void deleteUser() {
-		System.out.println("삭제할 회원의 아이디를 입력하세요>> ");
-		String userId1 = scn.nextLine();
+//회원삭제(관리자)
+	public void deleteUser(String userId1) {
+		
 		String sql = "delete from writer where user_id =?";
 		conn = getConnect();
 		try {
@@ -462,10 +450,9 @@ public class BoardDAO extends DAO {
 		}
 	}
 
-//회원삭제(관리자)
-	public void deleteUserM() {
-		System.out.println("삭제할 게시글의 고유번호 입력>> ");
-		int boardNo = Integer.parseInt(scn.nextLine());
+//게시글삭제(관리자)
+	public void deleteUserM(int boardNo) {
+		
 		String sql = "delete from board where board_seq = ?";
 		conn = getConnect();
 		try {
@@ -482,13 +469,11 @@ public class BoardDAO extends DAO {
 	}
 
 //비밀번호 찾기
-	public void findPw() {
+	public void findPw(String findId) {
 		MailApp dao = new MailApp();
 		String toId = "";
 		String password = "";
-		System.out.println("아이디를 입력해주세요");
-		System.out.print("선택>> ");
-		String findId = scn.nextLine();
+		
 		String sql = "select email from writer where user_id = ?";
 		String sql1 = "select user_pw from writer where user_id = ?";
 		conn = getConnect();
@@ -505,8 +490,8 @@ public class BoardDAO extends DAO {
 			if (rs.next()) {
 				password = "안녕하세요! 게시판 운영자입니다\n" + findId + " 회원님의 비밀번호는 " + rs.getString(1) + "입니다.";
 			}
-//			dao.sendMail(toId, password);
-			if (dao.sendMail(toId, password).equals("Success")) {
+			String subject = "자바게시판 비밀번호 찾기";
+			if (dao.sendMail(toId,subject, password).equals("Success")) {
 				System.out.println("등록된 이메일로 비밀번호를 발송하였습니다!");
 
 			} else {

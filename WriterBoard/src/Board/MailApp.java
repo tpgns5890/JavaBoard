@@ -12,11 +12,11 @@ import javax.mail.internet.MimeUtility;
 
 public class MailApp {
 
-	public String sendMail(String toId, String content) {
+	public String sendMail(String toId, String subject, String content) {
 		String _email = "tpgns5890@gmail.com";
 		String _password = "lwklkuyfbjoqnqgc";
 
-		String subject = "비밀번호 재설정";
+		String title = subject;
 		String fromMail = "tpgns5890@gmail.com";// "cholee@yedam.ac";
 		String fromName = "관리자";
 		String toMail = toId;// "leadon@naver.com"; // 콤마(,) 나열 가능
@@ -43,7 +43,7 @@ public class MailApp {
 																											// encoding
 																											// 필요
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toMail));
-			message.setSubject(subject);
+			message.setSubject(title);
 			message.setContent(content, "text/html;charset=UTF-8"); // 내용 설정 (HTML 형식)
 			message.setSentDate(new java.util.Date());
 
