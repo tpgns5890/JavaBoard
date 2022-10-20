@@ -20,7 +20,7 @@ public class MailApp {
 		String fromMail = "tpgns5890@gmail.com";// "cholee@yedam.ac";
 		String fromName = "관리자";
 		String toMail = toId;// "leadon@naver.com"; // 콤마(,) 나열 가능
-	
+
 		// mail properties
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com"); // use Gmail
@@ -52,8 +52,10 @@ public class MailApp {
 			t.sendMessage(message, message.getAllRecipients());
 			t.close();
 
-
 			return "Success";
+		} catch (NullPointerException e1) {
+			System.out.println("존재하지 않는 회원 아이디입니다.");
+			return "Fail";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "Fail";

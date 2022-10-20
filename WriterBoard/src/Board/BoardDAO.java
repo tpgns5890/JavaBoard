@@ -128,7 +128,9 @@ public class BoardDAO extends DAO {
 			System.out.println("글 등록이 완료되었습니다!");
 			System.out.println();
 
-		} catch (SQLException e) {
+		} catch (SQLIntegrityConstraintViolationException e1) {
+			System.out.println("비어있는 항목이 존재합니다.");
+		}catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
@@ -499,6 +501,11 @@ public class BoardDAO extends DAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		catch (NullPointerException e1) {
+			System.out.println("값을 입력해 주세요!");
+		}finally {
+			disconnect();
 		}
 
 	}

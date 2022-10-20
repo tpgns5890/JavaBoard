@@ -29,7 +29,6 @@ public class BoardApp {
 							System.out.print("선택>> ");
 							try {
 								int mainMenu = Integer.parseInt(scn.nextLine());
-
 								if (mainMenu == 1) {
 									System.out.print("글제목을 입력하세요>> ");
 									String boardTitle = scn.nextLine();
@@ -40,11 +39,10 @@ public class BoardApp {
 									int pageNum = 1, from = 0, to = 0;
 									while (true) {
 										List<Board> boards = dao.boardSearch();
-										int totalCnt = boards.size();
-										int totalPage = (int) Math.ceil(totalCnt / 5.0);
-										from = (pageNum - 1) * 5;
-										to = (pageNum * 5) - 1;
-
+										int totalCnt = boards.size();  //전체 목록수
+										int totalPage = (int) Math.ceil(totalCnt / 5.0); //총 페이지 수
+										from = (pageNum - 1) * 5; //현재페이지의 첫번째 값
+										to = (pageNum * 5) - 1;		//현재 페이지의 마지막 값
 										System.out.println(
 												"==================================글 전체 목록===============================");
 										for (int j = 0; j < totalCnt; j++) {
@@ -52,24 +50,24 @@ public class BoardApp {
 												System.out.println(boards.get(j).showAll());
 											}
 										}
-										System.out.println(
-												"======================================"+pageNum+"/"+totalPage+"==================================");
+										System.out.println("======================================" + pageNum + "/"
+												+ totalPage + "==================================");
 										System.out.println("1.이전페이지 2.다음페이지 3.상세조회 4.이전");
 										System.out.print("선택>> ");
 										try {
 											int boardMenu = Integer.parseInt(scn.nextLine());
 
 											if (boardMenu == 1) {
-												if(pageNum > 1 ) {
+												if (pageNum > 1) {
 													pageNum = pageNum - 1;
-												}else {
+												} else {
 													System.out.println("<첫번째 페이지입니다>");
 													System.out.println();
 												}
 											} else if (boardMenu == 2) {
-												if(pageNum < totalPage ) {
+												if (pageNum < totalPage) {
 													pageNum = pageNum + 1;
-												}else {
+												} else {
 													System.out.println("<마지막 페이지입니다>");
 													System.out.println();
 												}
@@ -91,7 +89,6 @@ public class BoardApp {
 														System.out.println("1.댓글쓰기 2.댓글삭제 3.작성자에게 쪽지 쓰기 4.상세보기종료");
 														System.out.print("선택>> ");
 														int repMenu = Integer.parseInt(scn.nextLine());
-
 														if (repMenu == 1) {
 															System.out.print("댓글내용 입력>> ");
 															String repContent = scn.nextLine();
@@ -110,6 +107,9 @@ public class BoardApp {
 														} else if (repMenu == 4) {
 															break;
 														}
+													}else {
+														System.out.println("해당하는 게시글이 없습니다.");
+														break;
 													}
 												}
 
@@ -241,7 +241,6 @@ public class BoardApp {
 						if (AuthKey.equals(key)) {
 							System.out.println("인증성공!");
 							dao.userCreate(userId, userPw, userName, email);
-							System.out.println("회원가입에 성공하였습니다.");
 							break;
 						} else if (AuthKey.equals("quit")) {
 							break;
