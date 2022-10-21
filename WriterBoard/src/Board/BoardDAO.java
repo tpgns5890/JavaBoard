@@ -31,9 +31,9 @@ public class BoardDAO extends DAO {
 				r = false;
 			}
 		} catch (SQLException e) {
-			System.out.println("존재하지 않는 아이디와 비밀번호입니다.");
+			System.out.println("존재하지 않는 아이디와 비밀번호입니다.\n");
 		} catch (NullPointerException e1) {
-			System.out.println("회원이 존재하지 않습니다.");
+			System.out.println("회원이 존재하지 않습니다.\n");
 			System.out.println();
 		} finally {
 			disconnect();
@@ -54,11 +54,11 @@ public class BoardDAO extends DAO {
 			psmt.setString(3, userName);
 			psmt.setString(4, email);
 			psmt.executeUpdate();
-			System.out.println("회원가입 완료!");
+			System.out.println("회원가입 완료!\n");
 			System.out.println();
 
 		} catch (SQLIntegrityConstraintViolationException e1) { // 아이디 중복 exception
-			System.out.println("중복된 아이디가 존재하거나 필수항목을 입력하지 않았습니다.");
+			System.out.println("중복된 아이디가 존재하거나 필수항목을 입력하지 않았습니다.\n");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -97,9 +97,9 @@ public class BoardDAO extends DAO {
 			psmt.setString(2, userPw);
 			int r = psmt.executeUpdate();
 			if (r != 1) {
-				System.out.println("존재하지 않는 아이디거나 비밀번호가 맞지 않습니다.");
+				System.out.println("존재하지 않는 아이디거나 비밀번호가 맞지 않습니다.\n");
 			} else {
-				System.out.println("회원삭제 완료!");
+				System.out.println("회원삭제 완료!\n");
 				System.out.println();
 			}
 		} catch (SQLException e) {
@@ -125,11 +125,11 @@ public class BoardDAO extends DAO {
 			psmt.setString(2, boardContent);
 			psmt.setString(3, userId);
 			psmt.executeUpdate();
-			System.out.println("글 등록이 완료되었습니다!");
+			System.out.println("글 등록이 완료되었습니다!\n");
 			System.out.println();
 
 		} catch (SQLIntegrityConstraintViolationException e1) {
-			System.out.println("비어있는 항목이 존재합니다.");
+			System.out.println("비어있는 항목이 존재합니다.\n");
 		}catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -191,7 +191,7 @@ public class BoardDAO extends DAO {
 			psmt.setInt(3, boardNum);
 			psmt.setString(4, userId);
 			psmt.executeUpdate();
-			System.out.println("수정완료!");
+			System.out.println("수정완료!\n");
 			System.out.println();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -215,7 +215,7 @@ public class BoardDAO extends DAO {
 			psmt = conn.prepareStatement(sql1);
 			psmt.setString(1, userId);
 			psmt.executeUpdate();
-			System.out.println("삭제완료!");
+			System.out.println("삭제완료!\n");
 			System.out.println();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -227,7 +227,7 @@ public class BoardDAO extends DAO {
 
 //조회수랭킹
 	public List<Board> ViewRank() {
-		String sql = "select * from (select * from board order by view_cnt desc) where rownum <=3";
+		String sql = "select * from (select * from board order by view_cnt desc) where rownum <=10";
 		conn = getConnect();
 		List<Board> list = new ArrayList<>();
 		try {
@@ -365,9 +365,9 @@ public class BoardDAO extends DAO {
 			psmt.setString(2, userId);
 			int r = psmt.executeUpdate();
 			if (r == 0) {
-				System.out.println("삭제할 게시글이 없거나 해당 게시글을 삭제할 권한이 없습니다.");
+				System.out.println("삭제할 게시글이 없거나 해당 게시글을 삭제할 권한이 없습니다.\n");
 			} else {
-				System.out.println("삭제완료!");
+				System.out.println("삭제완료!\n");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -388,7 +388,7 @@ public class BoardDAO extends DAO {
 			psmt.setString(3, getMsg);
 			psmt.setString(4, userId);
 			psmt.executeUpdate();
-			System.out.println("보내기 성공!");
+			System.out.println("보내기 성공!\n");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -426,7 +426,7 @@ public class BoardDAO extends DAO {
 			psmt.setString(1, userPw1);
 			psmt.setString(2, userId1);
 			psmt.executeUpdate();
-			System.out.println("비밀번호가 수정되었습니다.");
+			System.out.println("비밀번호가 수정되었습니다.\n");
 			System.out.println();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -444,7 +444,7 @@ public class BoardDAO extends DAO {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, userId1);
 			psmt.executeUpdate();
-			System.out.println("삭제완료");
+			System.out.println("삭제완료\n");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -461,7 +461,7 @@ public class BoardDAO extends DAO {
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, boardNo);
 			psmt.executeUpdate();
-			System.out.println("삭제완료");
+			System.out.println("삭제완료\n");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -494,16 +494,16 @@ public class BoardDAO extends DAO {
 			}
 			String subject = "자바게시판 비밀번호 찾기";
 			if (dao.sendMail(toId,subject, password).equals("Success")) {
-				System.out.println("등록된 이메일로 비밀번호를 발송하였습니다!");
+				System.out.println("등록된 이메일로 비밀번호를 발송하였습니다!\n");
 
 			} else {
-				System.out.println("전송실패");
+				System.out.println("전송실패\n");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		catch (NullPointerException e1) {
-			System.out.println("값을 입력해 주세요!");
+			System.out.println("값을 입력해 주세요!\n");
 		}finally {
 			disconnect();
 		}

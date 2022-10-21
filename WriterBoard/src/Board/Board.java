@@ -87,11 +87,11 @@ public class Board {
 	@Override
 	public String toString() {
 		return "『제목: " + boardTitle + "\n 내용: " + boardContent
-				+"\n "+ creationDate + String.format("|조회수: %2d", viewCnt) + "』";
+				+"\n 작성자: "+ writer+ "|"+ creationDate + String.format("|조회수: %2d", viewCnt) + "』";
 	}
 
 	public String showRank() {
-		return String.format("%2d번", boardNum) + String.format("|제목: %-10.10s", boardTitle) + "|작성자: " + writer + "|조회수: " + viewCnt;
+		return String.format("%2d번", boardNum) + String.format("|제목: %-10.10s", boardTitle) + String.format("|작성자: %-10s", writer) + "|조회수: " + viewCnt;
 	}
 	public String showAll() {
 		return String.format("|제목: %-8.8s", boardTitle) + String.format("|작성자: %-10.10s", writer) + "|" + creationDate + String.format("|조회수: %-2d", viewCnt) + String.format("|고유번호: %-2d|",boardNum);

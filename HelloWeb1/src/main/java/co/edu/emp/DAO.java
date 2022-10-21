@@ -1,4 +1,4 @@
-package Board;
+package co.edu.emp;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,8 +17,8 @@ public class DAO {
 	public Connection getConnect() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.109:1521:xe", "hr", "hr");
-//			System.out.println("연결성공");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "hr", "hr");
+			System.out.println("연결성공");
 		} catch (Exception e) {
 			System.out.println("연결실패");
 		}

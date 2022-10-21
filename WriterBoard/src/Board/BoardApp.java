@@ -44,14 +44,14 @@ public class BoardApp {
 										from = (pageNum - 1) * 5; //현재페이지의 첫번째 값
 										to = (pageNum * 5) - 1;		//현재 페이지의 마지막 값
 										System.out.println(
-												"==================================글 전체 목록===============================");
+												"==================================글 전체 목록=================================");
 										for (int j = 0; j < totalCnt; j++) {
 											if (j >= from && j <= to) {
 												System.out.println(boards.get(j).showAll());
 											}
 										}
 										System.out.println("======================================" + pageNum + "/"
-												+ totalPage + "==================================");
+												+ totalPage + "======================================\n");
 										System.out.println("1.이전페이지 2.다음페이지 3.상세조회 4.이전");
 										System.out.print("선택>> ");
 										try {
@@ -61,14 +61,14 @@ public class BoardApp {
 												if (pageNum > 1) {
 													pageNum = pageNum - 1;
 												} else {
-													System.out.println("<첫번째 페이지입니다>");
+													System.out.println("<첫번째 페이지입니다>\n");
 													System.out.println();
 												}
 											} else if (boardMenu == 2) {
 												if (pageNum < totalPage) {
 													pageNum = pageNum + 1;
 												} else {
-													System.out.println("<마지막 페이지입니다>");
+													System.out.println("<마지막 페이지입니다>\n");
 													System.out.println();
 												}
 											} else if (boardMenu == 3) {
@@ -86,7 +86,7 @@ public class BoardApp {
 															System.out.println(replys.toString());
 														}
 														System.out.println(
-																"==================================================================\n");
+																"======================================================================\n");
 														System.out.println("1.댓글쓰기 2.댓글삭제 3.작성자에게 쪽지 쓰기 4.상세보기종료");
 														System.out.print("선택>> ");
 														int repMenu = Integer.parseInt(scn.nextLine());
@@ -109,7 +109,7 @@ public class BoardApp {
 															break;
 														}
 													}else {
-														System.out.println("해당하는 게시글이 없습니다.");
+														System.out.println("해당하는 게시글이 없습니다.\n");
 														break;
 													}
 												}
@@ -118,11 +118,11 @@ public class BoardApp {
 												break;
 
 											} else {
-												System.out.println("없는 메뉴입니다.");
+												System.out.println("없는 메뉴입니다.\n");
 												System.out.println();
 											}
 										} catch (NumberFormatException e) {
-											System.out.println("숫자를 입력해주세요");
+											System.out.println("숫자를 입력해주세요\n");
 											System.out.println();
 										}
 									}
@@ -157,11 +157,11 @@ public class BoardApp {
 											} else if (menu == 3) {
 												break;
 											} else {
-												System.out.println("없는메뉴입니다");
+												System.out.println("없는메뉴입니다\n");
 												System.out.println();
 											}
 										} catch (NumberFormatException e) {
-											System.out.println("숫자를 입력해주세요");
+											System.out.println("숫자를 입력해주세요\n");
 											System.out.println();
 										}
 									}
@@ -205,22 +205,22 @@ public class BoardApp {
 									String getMsg = "manager";
 									dao.sendMsg(msgTitle, msgContent, getMsg, userId);
 								} else if (mainMenu == 9) {
-									System.out.println("============로그아웃합니다." + userId + "님 안녕히 가세요===========");
+									System.out.println("============로그아웃합니다." + userId + "님 안녕히 가세요===========\n");
 									System.out.println();
 									break;
 
 								} else {
-									System.out.println("없는 메뉴입니다. 다시 선택해 주세요.");
+									System.out.println("없는 메뉴입니다. 다시 선택해 주세요.\n");
 									System.out.println();
 									continue;
 								}
 							} catch (NumberFormatException e) {
-								System.out.println("숫자를 입력해주세요");
+								System.out.println("숫자를 입력해주세요\n");
 								System.out.println();
 							}
 						}
 					} else {
-						System.out.println("로그인 실패. 다시 시도하세요.");
+						System.out.println("로그인 실패. 다시 시도하세요.\n");
 						System.out.println();
 					}
 					continue;
@@ -235,18 +235,18 @@ public class BoardApp {
 					System.out.print("이메일을 입력하세요>> ");
 					String email = scn.nextLine();
 					String key = dao.emailAuth(email);
-					System.out.println("이메일로 인증번호가 발송되었습니다.");
+					System.out.println("이메일로 인증번호가 발송되었습니다.\n");
 					while (true) {
 						System.out.print("인증번호 입력>> ");
 						String AuthKey = scn.nextLine();
 						if (AuthKey.equals(key)) {
-							System.out.println("인증성공!");
+							System.out.println("인증성공!\n");
 							dao.userCreate(userId, userPw, userName, email);
 							break;
 						} else if (AuthKey.equals("quit")) {
 							break;
 						} else {
-							System.out.println("인증실패 다시 시도해 주세요(종료:quit)");
+							System.out.println("인증실패 다시 시도해 주세요(종료:quit)\n");
 							System.out.println();
 						}
 					}
@@ -294,7 +294,7 @@ public class BoardApp {
 								} else if (menu1 == 3) {
 									break;
 								} else {
-									System.out.println("없는 메뉴입니다. 다시 입력해주세요");
+									System.out.println("없는 메뉴입니다. 다시 입력해주세요\n");
 									System.out.println();
 								}
 							}
@@ -324,7 +324,7 @@ public class BoardApp {
 							System.out.println("<문의사항>");
 							List<Message> messages = dao.readMsg("manager");
 							for (Message msg : messages) {
-								System.out.println(msg.toString());
+								System.out.println(msg.toStringM());
 							}
 							System.out.println();
 						} else if (menu == 4) {
@@ -332,24 +332,24 @@ public class BoardApp {
 							System.out.println();
 							break;
 						} else {
-							System.out.println("없는 메뉴입니다. 다시 선택해 주세요.");
+							System.out.println("없는 메뉴입니다. 다시 선택해 주세요.\n");
 							System.out.println();
 						}
 					}
 
 				} else if (logMenu == 9) {
-					System.out.println("프로그램을 종료합니다.");
+					System.out.println("프로그램을 종료합니다.\n");
 					scn.close();
 					break;
 
 				} else {
 
-					System.out.println("없는 메뉴입니다. 다시 선택해 주세요.");
+					System.out.println("없는 메뉴입니다. 다시 선택해 주세요.\n");
 					System.out.println();
 					continue;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("숫자를 입력해주세요");
+				System.out.println("숫자를 입력해주세요\n");
 				System.out.println();
 			}
 

@@ -66,7 +66,7 @@ public class Writer {
 	}
 
 	public String showAll() {
-		return  String.format("%-10s", userId) +String.format("|비밀번호: %-5s", userPw)+ String.format("|이름: %-4s", userName) +String.format("|이메일: %-15s", email)+ "|게시글 수: " + postCnt;
+		return  String.format("%-10s", userId) +String.format("|비밀번호: %-5s", userPw)+ String.format("|이름: %-4s", userName) +String.format("|이메일: %-20s", email)+ "|게시글 수: " + postCnt;
 	}
 	
 	
