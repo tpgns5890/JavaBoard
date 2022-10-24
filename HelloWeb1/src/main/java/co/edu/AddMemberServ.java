@@ -19,7 +19,7 @@ public class AddMemberServ extends HttpServlet {
 	public AddMemberServ() {
 		super();
 	}
-
+// get 방식의 요청
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -56,11 +56,13 @@ public class AddMemberServ extends HttpServlet {
 		out.print("<a href=\"member/memberAdd.html\"><h2>첫화면으로</h2></a>");
 
 	}
-
+	//post 방식의 요청 시 실행
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		response.setContentType("test/html;charset=UTF-8");
+//		doGet(request, response);
+		PrintWriter out = response.getWriter(); // 사용자의 브라우저(출력스트림 생성)
+		out.print("<h3>Post 방식의 요청</h3>");
 	}
 
 }

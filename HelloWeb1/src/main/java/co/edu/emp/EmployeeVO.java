@@ -20,6 +20,12 @@ public class EmployeeVO {
 	}
 
 
+	public EmployeeVO(String jobId) {
+		super();
+		this.jobId = jobId;
+	}
+
+
 	public int getEmployeeId() {
 		return employeeId;
 	}
