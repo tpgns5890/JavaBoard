@@ -43,9 +43,9 @@ public class BoardDAO extends DAO {
 		return null; //실패할 경우 null을 반환.
 	}
 
-	public BoardVO searchBoard(int boardNo) {
-
-	}
+//	public BoardVO searchBoard(int boardNo) {
+//
+//	}
 
 	public List<BoardVO> boardList(BoardVO vo) {
 		List<BoardVO> list = new ArrayList<>();
