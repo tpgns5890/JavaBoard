@@ -1,10 +1,14 @@
 package co.edu.vo;
 
+import lombok.Data;
+
+@Data
 public class MemberVO {
 	private String id;
 	private String passwd;
 	private String email;
 	private String name;
+	private String responsibility;
 	
 	public  MemberVO() {
 		
@@ -15,6 +19,14 @@ public class MemberVO {
 		this.passwd = passwd;
 		this.name = name;
 		this.email = email;
+	}
+
+	public MemberVO(String id, String passwd, String email, String name, String responsibility) {
+		this.id = id;
+		this.passwd = passwd;
+		this.email = email;
+		this.name = name;
+		this.responsibility = responsibility;
 	}
 
 	public String getId() {
@@ -49,9 +61,18 @@ public class MemberVO {
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "MemberVO [id=" + id + ", passwd=" + passwd + ", email=" + email + ", name=" + name + "]";
+
+	public String getResponsibility() {
+		return responsibility;
+	}
+
+	public void setResponsibility(String responsibility) {
+		this.responsibility = responsibility;
 	}
 	
+	@Override
+	public String toString() {
+		return "MemberVO [id=" + id + ", passwd=" + passwd + ", email=" + email + ", name=" + name + ", responsibility="
+				+ responsibility + "]";
+	}
 }

@@ -8,21 +8,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import co.edu.common.Command;
 import co.edu.common.HttpUtil;
-import co.edu.service.MemberService;
-import co.edu.service.MemberServiceImpl;
-import co.edu.vo.MemberVO;
 
-public class MemberModifyForm implements Command {
+public class MemberSearchForm implements Command {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		//화면 open.
 		String id = req.getParameter("id");
-
-		req.setAttribute("mid", id);
 		
-		HttpUtil.forward(req, resp, "memberView/memberUpdate.jsp");
-
+		req.setAttribute("sid", id);
+		
+		HttpUtil.forward(req, resp, "memberView/memberSearch.jsp");
+		
+		
 	}
 
 }

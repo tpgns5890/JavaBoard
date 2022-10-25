@@ -1,6 +1,7 @@
 package co.edu.control;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,17 +13,16 @@ import co.edu.service.MemberService;
 import co.edu.service.MemberServiceImpl;
 import co.edu.vo.MemberVO;
 
-public class MemberModifyForm implements Command {
+public class MemberList implements Command {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		String id = req.getParameter("id");
+		MemberService service = new MemberServiceImpl();
+		List<MemberVO> list = service.memberList();
 
-		req.setAttribute("mid", id);
-		
-		HttpUtil.forward(req, resp, "memberView/memberUpdate.jsp");
+		req.setAttribute("memberList", list);
 
+		HttpUtil.forward(req, resp, "memberResult/memberList.jsp");
 	}
 
 }
